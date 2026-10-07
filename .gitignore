@@ -1,0 +1,10 @@
+/dnsquery
+/ideas.md
+
+# Private-only paths, kept out of the public GitHub mirror (see
+# github-release.md). Tracked files here stay tracked on main; these
+# entries only take effect when the mirror branch is rebuilt.
+/github-release.md
+/github-release.sh
+/ci/
+/CLAUDE.md

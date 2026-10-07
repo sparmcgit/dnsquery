@@ -1,0 +1,16 @@
+version: "2"
+linters:
+  settings:
+    errcheck:
+      exclude-functions:
+        - (io.Closer).Close
+        - (*os.File).Close
+        - (*text/tabwriter.Writer).Flush
+        - (*encoding/csv.Writer).Write
+        - fmt.Fprintf
+        - fmt.Fprintln
+        - os.Remove
+        - github.com/spf13/viper.BindPFlag
+        - (*github.com/spf13/cobra.Command).MarkFlagRequired
+        # Add project-specific Close/Flush/Write-style exclusions here, e.g.
+        # a storage layer's own Close method.

@@ -1,0 +1,32 @@
+#!/bin/bash
+# Martin Haggstrom 231222
+#
+set -e
+
+# environment variables
+export GOOS=linux
+export GOARCH=amd64
+export CGO_ENABLED=0
+export PROGRAM=$(basename "$(pwd)")
+# Optional build tags, comma-separated: excel (Excel output), doq (DNS over
+# QUIC), e.g. TAGS=excel,doq ./compile.
+export TAGS=${TAGS:-}
+
+# format code
+#go fmt ./...
+
+# tidy module files
+go mod tidy
+
+# check the code for known vulnerabilities
+if ! command -v govulncheck >/dev/null 2>&1; then
+	go install golang.org/x/vuln/cmd/govulncheck@latest
+fi
+govulncheck -show verbose -tags "$TAGS" ./...
+
+#echo "running go vet"
+#go vet ./...
+
+# -trimpath removes file system paths from the resulting executable.
+# -buildvcs=false avoids VCS stamping failures outside a valid Git checkout.
+go build -trimpath -buildvcs=false -tags "$TAGS" -o "$PROGRAM" -ldflags="-s -w" .
